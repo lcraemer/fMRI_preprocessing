@@ -1,15 +1,19 @@
-# Gabor-Bandit fMRI Preprocessing
+# fMRI Preprocessing Pipeline
 
-This repository contains the code to preprocess Gabor-Bandit fMRI data.
+This repository contains code to preprocess fMRI data.
 
 ## Getting Started
 
-The code requires [BIDS](http://bids.neuroimaging.io) formatted data. Preprocessing stepts include realignment, normalization and smoothing. We have two main files:
+The code requires [BIDS](http://bids.neuroimaging.io) formatted data. Preprocessing steps include realignment, normalization, and smoothing. We have two main files:
 
-* gb_preprocessing: This script preprocesses the Gabor-Bandit fMRI data
-* gb_prepobj: Gabor-bandit preprocessing class definition file
+* runPreprocessing: This runs the specified preprocessing pipeline
+* prepobj: Preprocessing class definition file
 
-Add the gb_preprocessing folder to the Matlab path. In the gb_preprocessing script, add the SPM path and indicate where the BIDS data directory is located. 
+Add the corresponding folder to the Matlab path. In the runPreprocessing script, add the SPM path and indicate where the BIDS data directory is located. 
+
+## Please Note
+
+The code has not yet been properly tested and verified. Run your own checks and report issues to help improve this pipeline. 
 
 ## Built With
 
@@ -18,14 +22,14 @@ Add the gb_preprocessing folder to the Matlab path. In the gb_preprocessing scri
 
 ## Acknowledgements
 
-* The code is based on preprocessing code from [Dirk Ostwald's lab at FU Berlin](https://www.ewi-psy.fu-berlin.de/einrichtungen/arbeitsbereiche/computational_cogni_neurosc/research/index.html)
+* The code is based on preprocessing code from [Dirk Ostwald's lab](https://www.ipsy.ovgu.de/Institut/Abteilungen+des+Institutes/Methodenlehre+I+_+Experimentelle+und+Neurowissenschaftliche+Psychologie/Team.html)
+
 * [bioRxiv preprint](https://www.biorxiv.org/content/10.1101/253047v1)
 * [OSF project](https://osf.io/hkevu/)
 
 ## Authors
 
-* **Rasmus Bruckner** - [GitHub](https://github.com/rasmusbruckner) - [IMPRS LIFE](https://www.imprs-life.mpg.de/de/people/rasmus-bruckner)
-* **Felix Molter** - [IMPRS LIFE](https://www.imprs-life.mpg.de/de/people/felix-molter)
+* **Rasmus Bruckner** - [GitHub](https://github.com/rasmusbruckner) - [FU Berlin](https://www.ewi-psy.fu-berlin.de/en/einrichtungen/arbeitsbereiche/neural_dyn_of_vis_cog/learning-lab/team/bruckner/index.html)
 
 ## License
 
