@@ -4,7 +4,7 @@ This repository contains code to preprocess fMRI data.
 
 ## Getting Started
 
-The code requires [BIDS](http://bids.neuroimaging.io) formatted data. Preprocessing steps include realignment, normalization, and smoothing. We have two main files:
+The code requires [BIDS](http://bids.neuroimaging.io) formatted data. Preprocessing steps include realignment, slicetiming correction, normalization, estimation of noise components and smoothing. We have two main files:
 
 * runPreprocessing: This runs the specified preprocessing pipeline
 * prepobj: Preprocessing class definition file
