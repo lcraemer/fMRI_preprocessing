@@ -30,6 +30,8 @@ The code has not yet been properly tested and verified. Run your own checks and 
 ## Authors
 
 * **Rasmus Bruckner** - [GitHub](https://github.com/rasmusbruckner) - [FU Berlin](https://www.ewi-psy.fu-berlin.de/en/einrichtungen/arbeitsbereiche/neural_dyn_of_vis_cog/learning-lab/team/bruckner/index.html)
+* **Johannes Singer** - [GitHub](https://github.com/Singerjohannes) - [FU Berlin](https://www.ewi-psy.fu-berlin.de/en/einrichtungen/arbeitsbereiche/neural_dyn_of_vis_cog/team_v2/pre_docs/johannes/index.html)
+
 
 ## License
 
