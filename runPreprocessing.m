@@ -40,7 +40,7 @@ src_dir = 'func';  % functional data sub-directory
 tgt_dir = '/Users/johannessinger/Documents/cloud_Berlin/Projekte/fmri_pipeline/derived'; 
 
 % BIDS format file name part labels
-BIDS_fn_label{1} = '_task-main'; % BIDS file name task label
+BIDS_fn_label{1} = {'_task-localizer';'_task-main'}; % BIDS file name task label
 BIDS_fn_label{2} = ''; % BIDS file name acquisition label
 BIDS_fn_label{3} = '_run-00'; % BIDS file name run index
 BIDS_fn_label{4} = '_bold'; % BIDS file name modality suffix
@@ -50,7 +50,8 @@ BIDS_fn_label{4} = '_bold'; % BIDS file name modality suffix
 
 % Select run numbers 
 % E.g., run_sel = {[1 2 3 4 5 6], [1 2 3 4 5 6]};
-run_sel = {[1]};
+% first vector in the first cell is for subject 1 and for the first task, second vector is for the second task
+run_sel = {{[1],[1:12]};{[1],[1:12]}};
 
 % Select preprocessing steps 
 %       1. Segmentation/Normalization of T1 images
@@ -61,7 +62,7 @@ run_sel = {[1]};
 %       6. Estimation of noise regressors using the aCompCor method
 %       (Behzadi,2018) 
 %       7. Smoothing (optional) 
-prep_steps = [7];
+prep_steps = [1:6];
 
 % Preprocessing variables
 prep_vars = struct();
