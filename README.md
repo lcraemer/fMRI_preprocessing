@@ -9,6 +9,10 @@ The code requires [BIDS](http://bids.neuroimaging.io) formatted data. Preprocess
 * runPreprocessing: This runs the specified preprocessing pipeline
 * prepobj: Preprocessing class definition file
 
+The code also contains a file for running a simple GLM + contrasts: 
+
+* runGLM: This script runs the GLM for either the localizer task or the main experimental task and computes contrasts 
+
 Add the corresponding folder to the Matlab path. In the runPreprocessing script, add the SPM path and indicate where the BIDS data directory is located. 
 
 ## Please Note
