@@ -27,14 +27,16 @@ addpath(spm_path)
 spm('defaults','fmri')
 spm_jobman('initcfg')
 
-% Subject directories
-% E.g., sub_dir = {'sub-01', 'sub-02', 'sub-03'};
-sub_dir = {'sub-01'};
-
 % Data source root directory
 % E.g., ds_root = '~/Documents/gb_fmri_data/BIDS/ds_xxx';
-ds_root = '/Users/johannessinger/Documents/cloud_Berlin/Projekte/fmri_pipeline/data';
+ds_root = '/Users/johannessinger/Documents/cloud_Berlin/Projekte/fmri_pipeline/data/ds004331-download';
 src_dir = 'func';  % functional data sub-directory
+
+
+% Subject directories
+% E.g., sub_dir = {'sub-01', 'sub-02', 'sub-03'};
+sub_dir = dir(fullfile(ds_root,'sub*'));
+sub_dir = {sub_dir.name}';
 
 % Data target directory 
 tgt_dir = '/Users/johannessinger/Documents/cloud_Berlin/Projekte/fmri_pipeline/derived'; 
@@ -51,9 +53,13 @@ BIDS_fn_label{4} = '_bold'; % BIDS file name modality suffix
 % Select run numbers 
 % E.g., run_sel = {[1 2 3 4 5 6], [1 2 3 4 5 6]};
 % first vector in the first cell is for subject 1 and for the first task, second vector is for the second task
-run_sel = {{[1],[1:12]};{[1],[1:12]}};
+for i = 1:length(sub_dir)
+    run_sel{i} = {[1],[1:12]};
+end 
 
 % Select preprocessing steps 
+%       0. Create folder and import func and anat files --> if this is
+%       selected the current folder is deleted and recreated 
 %       1. Segmentation/Normalization of T1 images
 %       2. Realignement
 %       3. Slice-timing correction
@@ -62,7 +68,7 @@ run_sel = {{[1],[1:12]};{[1],[1:12]}};
 %       6. Estimation of noise regressors using the aCompCor method
 %       (Behzadi,2018) 
 %       7. Smoothing (optional) 
-prep_steps = [1:6];
+prep_steps = [0:7];
 
 % Preprocessing variables
 prep_vars = struct();
@@ -84,7 +90,7 @@ prep_vars.slicetiming = [0, 0.78, 0.0775, 0.8575, 0.1575, 0.935, 0.235, 1.0125,.
 
 % Cycle over participants
 % -----------------------
-for i = 1:numel(sub_dir)
+for i = 2%:numel(sub_dir)
     
     prep_vars.run_sel = run_sel{i};
 
@@ -95,7 +101,7 @@ for i = 1:numel(sub_dir)
     prep.spm_fmri_preprocess(sub_dir{i});
     
     % Delete intermediate files created by SPM12 during fMRI data preprocessing
-    %prep.spm_delete_preprocess_files(sub_dir{i});
+    prep.spm_delete_preprocess_files(sub_dir{i});
     
 end
 

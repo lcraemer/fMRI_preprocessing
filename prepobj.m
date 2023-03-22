@@ -71,6 +71,7 @@ classdef prepobj
             sub_src_dir = fullfile(prepobj.ds_root, sub_dir, prepobj.src_dir); % source directory
             sub_pre_dir = fullfile(prepobj.tgt_dir, sub_dir); % preprocessing directory
             
+            if any(ismember(prepobj.prep_steps,0))
             % Delete directory and its contents if it is preexisting and create a new one
             if exist(sub_pre_dir, 'dir')
                  rmdir(sub_pre_dir,'s')
@@ -116,6 +117,7 @@ classdef prepobj
             end
             
             % Anatomical data
+            sfn = fullfile(prepobj.ds_root, sub_dir, 'anat',[sub_dir, '_T1w.nii.gz']);
             struct_dir = fullfile(sub_pre_dir, 'T1');
             mkdir(struct_dir);
             tfn = fullfile(struct_dir, [sub_dir '_T1w.nii.gz']);
@@ -123,6 +125,10 @@ classdef prepobj
             
             % Unzip files
             gunzip(tfn)
+            
+            % exclude the import steps for the later preprocessing
+            prepobj.prep_steps = prepobj.prep_steps(2:end);
+            end 
             
             % Run specified preprocessing steps
             % ---------------------------------
@@ -231,6 +237,7 @@ classdef prepobj
                             % Normalization of current run
                             filt = ['^' curr_prefix '.*\.nii'];
                             run_dir = fullfile(sub_pre_dir, ['RUN_0' num2str(r) prepobj.BIDS_fn_label{1}{task_id}]);
+                            if ~exist('struct_dir','var'), struct_dir = fullfile(sub_pre_dir, 'T1'); end
                             normalization(struct_dir, filt, run_dir, normalization_prefix)
                         end
                         end
@@ -262,8 +269,10 @@ classdef prepobj
                         % set current prefix 
                         curr_prefix = 'nar';
 
-                        % Cycle over tasks
-                        for task_id = 1:length(prepobj.run_sel)                        
+                        % Cycle over tasks --> here we only do this for the
+                        % first task which corresponds to the localizer
+                        % task 
+                        for task_id = 1 %:length(prepobj.run_sel)                        
                         % Cycle over runs
                         for r = prepobj.run_sel{task_id}
                             
