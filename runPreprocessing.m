@@ -20,16 +20,22 @@ close all
 
 % Directories 
 % -----------
+% Get the parent directory of the current directory
+parent_dir = fileparts(pwd);
 
 % SPM12
-spm_path = '/Users/johannessinger/Documents/cloud_Berlin/Projekte/dfg/WP1/analysis_tools/spm/spm12/';
+spm_path = fullfile(parent_dir,'toolboxes/spm/spm12/');
 addpath(spm_path)
 spm('defaults','fmri')
 spm_jobman('initcfg')
 
+% TAPAS toolbox 
+tapas_path = fullfile(parent_dir,'toolboxes/tapas-master');
+addpath(tapas_path)
+
 % Data source root directory
 % E.g., ds_root = '~/Documents/gb_fmri_data/BIDS/ds_xxx';
-ds_root = '/Users/johannessinger/Documents/cloud_Berlin/Projekte/fmri_pipeline/data/ds004331-download';
+ds_root = fullfile(parent_dir,'data/ds004331-download');
 src_dir = 'func';  % functional data sub-directory
 
 

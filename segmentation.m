@@ -11,7 +11,7 @@ function segmentation(struct_dir, spm_path)
 warning off
 
 % Select relevant volumes
-volumes = spm_select('List', struct_dir, '^.*\.nii$');
+volumes = spm_select('List', struct_dir, '^sub.*\.nii$');
 
 % Perform segmentation
 matlabbatch = [];
@@ -52,8 +52,19 @@ matlabbatch{1}.spm.spatial.preproc.warp.cleanup = 1;
 matlabbatch{1}.spm.spatial.preproc.warp.reg = [0 0.001 0.5 0.05 0.2];
 matlabbatch{1}.spm.spatial.preproc.warp.affreg = 'mni';
 matlabbatch{1}.spm.spatial.preproc.warp.fwhm = 0;
-matlabbatch{1}.spm.spatial.preproc.warp.samp = 3;
+matlabbatch{1}.spm.spatial.preproc.warp.samp = 2;
 matlabbatch{1}.spm.spatial.preproc.warp.write = [0 1];
+
+% Normalize GM,WM and CSF masks for later noise component estimation
+% Select relevant volumes
+volumes = spm_select('fplist', struct_dir, '^c.*\.nii$');
+matlabbatch{2}.spm.spatial.normalise.write.subj.def(1) = cfg_dep('Segment: Forward Deformations', substruct('.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','fordef', '()',{':'}));
+matlabbatch{2}.spm.spatial.normalise.write.subj.resample = cellstr(volumes);
+%[bbox, vox] = spm_get_bbox(struct_path);
+matlabbatch{2}.spm.spatial.normalise.write.woptions.bb = [-78 -112 -70
+    78 76 85];
+matlabbatch{2}.spm.spatial.normalise.write.woptions.vox = [1 1 1];
+matlabbatch{2}.spm.spatial.normalise.write.woptions.interp = 4;
 
 % Run job
 spm_jobman('run', matlabbatch)

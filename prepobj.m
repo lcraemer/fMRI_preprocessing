@@ -136,6 +136,10 @@ classdef prepobj
             % Initialize prefix indicating preprocessing step
             curr_prefix = '';
             
+            % create struct_dir variable if import was carried out in a
+            % separate step
+            if ~exist('struct_dir','var'), struct_dir = fullfile(sub_pre_dir, 'T1'); end
+            
             % Go through specified steps
             for p = prepobj.prep_steps
                 
@@ -257,7 +261,7 @@ classdef prepobj
                             disp(['Step ' num2str(p) ' Estimation of noise components: ' sub_dir ', run ' num2str(r)])
                             
                             % Specify files or filters for files for noise estimation
-                            noise_rois = cellstr(spm_select('fplistrec',struct_dir,['^(c3|c2).*\.(nii|img)$']));
+                            noise_rois = cellstr(spm_select('fplistrec',struct_dir,['^(wc3|wc2).*\.(nii|img)$']));
                             filter = ['^' curr_prefix '.*\.nii']; % filter name
                             run_dir = fullfile(sub_pre_dir, ['RUN_0' num2str(r) prepobj.BIDS_fn_label{1}{task_id}]); % run directory
                             est_noise_comps(filter, run_dir,noise_rois,prepobj)
