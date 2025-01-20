@@ -37,7 +37,7 @@ addpath(tapas_path)
 if ispc
     ds_root = 'G:\Pilot_P8_MRT\BIDS';  % For Windows
 elseif ismac
-    ds_root = '/Volumes/Pilot_P8_MRT/BIDS';  % For macOS
+    ds_root = '/Volumes/WORK/Pilot_P8_MRT/BIDS';  % For macOS
 else
     error('Unsupported operating system');
 end
@@ -52,7 +52,7 @@ sub_dir = {sub_dir.name}';
 if ispc
     tgt_dir = 'G:\Pilot_P8_MRT\derived';  % For Windows
 elseif ismac
-    tgt_dir = '/Volumes/Pilot_P8_MRT/derived';  % For macOS
+    tgt_dir = '/Volumes/WORK/Pilot_P8_MRT/derived';  % For macOS
 else
     error('Unsupported operating system');
 end
@@ -84,7 +84,7 @@ end
 %       6. Estimation of noise regressors using the aCompCor method
 %       (Behzadi,2018) 
 %       7. Smoothing (optional) 
-prep_steps = [0:6];
+prep_steps = [0:7];
 
 % Preprocessing variables
 prep_vars = struct();
