@@ -23,18 +23,24 @@ clear all
 % -----------
 
 % SPM12
-spm_path = 'C:\Users\craemerl\Documents\MATLAB\GitHub\spm12';
+spm_path = addpath(fullfile(userpath, 'spm12'));
 addpath(spm_path)
 spm('defaults','fmri')
 spm_jobman('initcfg')
 
 % TAPAS toolbox 
-tapas_path = 'C:\Users\craemerl\Documents\MATLAB\GitHub\tapas';
+tapas_path = addpath(fullfile(userpath, 'tapas'));
 addpath(tapas_path)
 
 % Data source root directory
 % E.g., ds_root = '~/Documents/gb_fmri_data/BIDS/ds_xxx';
-ds_root =  'G:\Pilot_P8_MRT\BIDS';
+if ispc
+    ds_root = 'G:\Pilot_P8_MRT\BIDS';  % For Windows
+elseif ismac
+    ds_root = '/Volumes/Pilot_P8_MRT/BIDS';  % For macOS
+else
+    error('Unsupported operating system');
+end
 src_dir = 'func';  % functional data sub-directory
 
 % Subject directories
@@ -43,7 +49,13 @@ sub_dir = dir(fullfile(ds_root,'sub*'));
 sub_dir = {sub_dir.name}';
 
 % Data target directory 
-tgt_dir = 'G:\Pilot_P8_MRT\derived';
+if ispc
+    tgt_dir = 'G:\Pilot_P8_MRT\derived';  % For Windows
+elseif ismac
+    tgt_dir = '/Volumes/Pilot_P8_MRT/derived';  % For macOS
+else
+    error('Unsupported operating system');
+end
 
 % BIDS format file name part labels
 BIDS_fn_label{1} = '_task-gb'; % BIDS file name task label
@@ -72,7 +84,7 @@ end
 %       6. Estimation of noise regressors using the aCompCor method
 %       (Behzadi,2018) 
 %       7. Smoothing (optional) 
-prep_steps = [0:1];
+prep_steps = [0:6];
 
 % Preprocessing variables
 prep_vars = struct();
