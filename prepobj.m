@@ -90,15 +90,15 @@ classdef prepobj
             for r = prepobj.run_sel{task_id}
                 
                 % Run directory
-                sub_pre_run_dir = fullfile(sub_pre_dir, ['RUN_0' num2str(r) prepobj.BIDS_fn_label{1}{task_id}]);
+                sub_pre_run_dir = fullfile(sub_pre_dir, [sub_dir prepobj.BIDS_fn_label{1} prepobj.BIDS_fn_label{3} num2str(r) prepobj.BIDS_fn_label{4}]);
                 if ~isdir(sub_pre_run_dir), mkdir(sub_pre_run_dir); end 
                 
                 % fMRI data
                 % ---------
                 
                 % Source and target file copying
-                sfn = fullfile(sub_src_dir, [sub_dir prepobj.BIDS_fn_label{1}{task_id} prepobj.BIDS_fn_label{3} num2str(r) prepobj.BIDS_fn_label{4} '.nii.gz']);
-                tfn = fullfile(sub_pre_run_dir, [sub_dir prepobj.BIDS_fn_label{1}{task_id} prepobj.BIDS_fn_label{3} num2str(r) '.nii.gz']);
+                sfn = fullfile(sub_src_dir, [sub_dir prepobj.BIDS_fn_label{1} prepobj.BIDS_fn_label{3} num2str(r) prepobj.BIDS_fn_label{4} '.nii.gz']);
+                tfn = fullfile(sub_pre_run_dir, [sub_dir prepobj.BIDS_fn_label{1} prepobj.BIDS_fn_label{3} num2str(r) '.nii.gz']);
                 
                 copyfile(sfn,tfn)
                 

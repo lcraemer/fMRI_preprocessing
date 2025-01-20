@@ -21,8 +21,6 @@ clear all
 
 % Directories 
 % -----------
-% Get the parent directory of the current directory
-parent_dir = fileparts(pwd);
 
 % SPM12
 spm_path = 'C:\Users\craemerl\Documents\MATLAB\GitHub\spm12';
