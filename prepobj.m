@@ -107,10 +107,10 @@ classdef prepobj
                 
                     
                 % Partition single .nii to multiple .nii (volumes)
-                % job = [];
-                % job{1}.spm.util.split.vol = {tfn(1:end-3)}; % single .nii to partition
-                % job{1}.spm.util.split.outdir = {''}; % output directory is source file directory
-                % spm_jobman('run', job);
+%                 job = [];
+%                 job{1}.spm.util.split.vol = {tfn(1:end-3)}; % single .nii to partition
+%                 job{1}.spm.util.split.outdir = {''}; % output directory is source file directory
+%                 spm_jobman('run', job);
                 
                 
             end
@@ -194,8 +194,8 @@ classdef prepobj
                             disp(['Step ' num2str(p) ' Slicetiming correction: ' sub_dir ', run ' num2str(r)])
                             
                             % Realignment of current run
-                            filt = ['^' curr_prefix sub_dir prepobj.BIDS_fn_label{1}{task_id} prepobj.BIDS_fn_label{3} num2str(r) '.*\.nii$']; % filename filter
-                            run_dir = fullfile(sub_pre_dir, ['RUN_0' num2str(r),prepobj.BIDS_fn_label{1}{task_id}]); % run directory
+                            filt = ['^' curr_prefix sub_dir prepobj.BIDS_fn_label{1} prepobj.BIDS_fn_label{2} prepobj.BIDS_fn_label{3} num2str(r) '.*\.nii$']; % filename filter
+                            run_dir = fullfile(sub_pre_dir, [sub_dir prepobj.BIDS_fn_label{1} prepobj.BIDS_fn_label{2} prepobj.BIDS_fn_label{3} num2str(r) prepobj.BIDS_fn_label{4}]); % run directory
                             slicetiming_correction(filt, run_dir, slicetiming_prefix,prepobj)
                             
                         end
@@ -215,8 +215,8 @@ classdef prepobj
                             disp(['Step ' num2str(p) ' Coregistration: ' sub_dir ', run ' num2str(r)])
                             
                             % Coregistration of current run
-                            filt = ['^mean' sub_dir prepobj.BIDS_fn_label{1}{task_id} prepobj.BIDS_fn_label{3} num2str(r) '.*\.nii$']; % filename filter
-                            run_dir = fullfile(sub_pre_dir, ['RUN_0' num2str(r) prepobj.BIDS_fn_label{1}{task_id}]); % run directory
+                            filt = ['^mean' sub_dir prepobj.BIDS_fn_label{1} prepobj.BIDS_fn_label{2} prepobj.BIDS_fn_label{3} num2str(r) '.*\.nii$']; % filename filter
+                            run_dir = fullfile(sub_pre_dir, [sub_dir prepobj.BIDS_fn_label{1} prepobj.BIDS_fn_label{2} prepobj.BIDS_fn_label{3} num2str(r) prepobj.BIDS_fn_label{4}]); % run directory
                             coregistration(struct_dir, filt, run_dir, curr_prefix)
                         end
                         end
@@ -237,10 +237,10 @@ classdef prepobj
                             
                             % Inform user
                             disp(['Step ' num2str(p) ' Normalization: ' sub_dir ', run ' num2str(r)])
-                            
+
                             % Normalization of current run
                             filt = ['^' curr_prefix '.*\.nii'];
-                            run_dir = fullfile(sub_pre_dir, ['RUN_0' num2str(r) prepobj.BIDS_fn_label{1}{task_id}]);
+                            run_dir = fullfile(sub_pre_dir, [sub_dir prepobj.BIDS_fn_label{1} prepobj.BIDS_fn_label{2} prepobj.BIDS_fn_label{3} num2str(r) prepobj.BIDS_fn_label{4}]); % run directory
                             if ~exist('struct_dir','var'), struct_dir = fullfile(sub_pre_dir, 'T1'); end
                             normalization(struct_dir, filt, run_dir, normalization_prefix)
                         end
@@ -263,7 +263,7 @@ classdef prepobj
                             % Specify files or filters for files for noise estimation
                             noise_rois = cellstr(spm_select('fplistrec',struct_dir,['^(wc3|wc2).*\.(nii|img)$']));
                             filter = ['^' curr_prefix '.*\.nii']; % filter name
-                            run_dir = fullfile(sub_pre_dir, ['RUN_0' num2str(r) prepobj.BIDS_fn_label{1}{task_id}]); % run directory
+                            run_dir = fullfile(sub_pre_dir, [sub_dir prepobj.BIDS_fn_label{1} prepobj.BIDS_fn_label{2} prepobj.BIDS_fn_label{3} num2str(r) prepobj.BIDS_fn_label{4}]); % run directory
                             est_noise_comps(filter, run_dir,noise_rois,prepobj)
                         end
                         end
@@ -285,7 +285,7 @@ classdef prepobj
                             
                             % Smoothing of current run
                             filter = ['^' curr_prefix '.*\.nii']; % filter name
-                            run_dir = fullfile(sub_pre_dir, ['RUN_0' num2str(r) prepobj.BIDS_fn_label{1}{task_id}]); % run directory
+                            run_dir = fullfile(sub_pre_dir, [sub_dir prepobj.BIDS_fn_label{1} prepobj.BIDS_fn_label{2} prepobj.BIDS_fn_label{3} num2str(r) prepobj.BIDS_fn_label{4}]); % run directory
                             smoothing(filter, run_dir)
                         end
                         end
@@ -314,7 +314,7 @@ classdef prepobj
             for task_id = 1:length(prepobj.run_sel)            
             % Delete r* and nr* files
             for r = 1:length(prepobj.run_sel)
-                sub_pre_run_dir = fullfile(sub_pre_dir, [sub_dir prepobj.BIDS_fn_label{1} prepobj.BIDS_fn_label{2} prepobj.BIDS_fn_label{3} num2str(r) prepobj.BIDS_fn_label{4}]]); % subject run directory
+                sub_pre_run_dir = fullfile(sub_pre_dir, [sub_dir prepobj.BIDS_fn_label{1} prepobj.BIDS_fn_label{2} prepobj.BIDS_fn_label{3} num2str(r) prepobj.BIDS_fn_label{4}]); % subject run directory
                 delete(fullfile(sub_pre_run_dir, 'r*.nii'));
                 delete(fullfile(sub_pre_run_dir, 'ar*.nii'));
             end
