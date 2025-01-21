@@ -9,7 +9,7 @@ function fileset = getImagingFileset(run_dir, files)
 %       fileset: Requested file list
 
 % Get volumes
-volumes = spm_vol([run_dir filesep files]);
+volumes = spm_vol([run_dir filesep files ',:']);
 
 % Initialize fileset
 fileset = cell(1, size(volumes,1)); 
