@@ -23,13 +23,13 @@ clear all
 % -----------
 
 % SPM12
-spm_path = addpath(fullfile(userpath, 'spm12'));
+spm_path = fullfile(userpath, 'spm12');
 addpath(spm_path)
 spm('defaults','fmri')
 spm_jobman('initcfg')
 
 % TAPAS toolbox 
-tapas_path = addpath(fullfile(userpath, 'tapas'));
+tapas_path = fullfile(userpath, 'tapas');
 addpath(tapas_path)
 
 % Data source root directory
