@@ -59,7 +59,7 @@ end
 
 % BIDS format file name part labels
 BIDS_fn_label{1} = '_task-gb'; % BIDS file name task label
-BIDS_fn_label{2} = ''; % BIDS file name acquisition label
+BIDS_fn_label{2} = '_1'; % BIDS file name acquisition label
 BIDS_fn_label{3} = '_run-0'; % BIDS file name run index
 BIDS_fn_label{4} = '_bold'; % BIDS file name modality suffix
 
