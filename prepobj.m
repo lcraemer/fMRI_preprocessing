@@ -314,7 +314,7 @@ classdef prepobj
             for task_id = 1:length(prepobj.run_sel)            
             % Delete r* and nr* files
             for r = 1:length(prepobj.run_sel)
-                sub_pre_run_dir = fullfile(sub_pre_dir, ['RUN_0' num2str(r) prepobj.BIDS_fn_label{1}{task_id}]); % subject run directory
+                sub_pre_run_dir = fullfile(sub_pre_dir, [sub_dir prepobj.BIDS_fn_label{1} prepobj.BIDS_fn_label{2} prepobj.BIDS_fn_label{3} num2str(r) prepobj.BIDS_fn_label{4}]]); % subject run directory
                 delete(fullfile(sub_pre_run_dir, 'r*.nii'));
                 delete(fullfile(sub_pre_run_dir, 'ar*.nii'));
             end
