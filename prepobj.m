@@ -215,8 +215,8 @@ classdef prepobj
                             disp(['Step ' num2str(p) ' Coregistration: ' sub_dir ', run ' num2str(r)])
                             
                             % Coregistration of current run
-                            filt = ['^mean' sub_dir prepobj.BIDS_fn_label{1} prepobj.BIDS_fn_label{2} prepobj.BIDS_fn_label{3} num2str(r) '.*\.nii$']; % filename filter
-                            run_dir = fullfile(sub_pre_dir, [sub_dir prepobj.BIDS_fn_label{1} prepobj.BIDS_fn_label{2} prepobj.BIDS_fn_label{3} num2str(r) prepobj.BIDS_fn_label{4}]); % run directory
+                            filt = ['^mean' sub_dir prepobj.BIDS_fn_label{1} prepobj.BIDS_fn_label{3} num2str(r) '.*\.nii$']; % filename filter
+                            run_dir = fullfile(sub_pre_dir, [sub_dir prepobj.BIDS_fn_label{1} prepobj.BIDS_fn_label{3} num2str(r) prepobj.BIDS_fn_label{4}]); % run directory
                             coregistration(struct_dir, filt, run_dir, curr_prefix)
                         end
                         end
