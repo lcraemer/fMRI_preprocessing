@@ -35,9 +35,9 @@ addpath(tapas_path)
 % Data source root directory
 % E.g., ds_root = '~/Documents/gb_fmri_data/BIDS/ds_xxx';
 if ispc
-    ds_root = 'G:\Pilot_P8_MRT\BIDS';  % For Windows
+    ds_root = 'G:\P8_DICOMs\BIDS';  % For Windows
 elseif ismac
-    ds_root = '/Volumes/WORK/Pilot_P8_MRT/BIDS';  % For macOS
+    ds_root = '/Volumes/WORK/P8_DICOMs/BIDS';  % For macOS
 else
     error('Unsupported operating system');
 end
@@ -50,17 +50,17 @@ sub_dir = {sub_dir.name}';
 
 % Data target directory 
 if ispc
-    tgt_dir = 'G:\Pilot_P8_MRT\derived';  % For Windows
+    tgt_dir = 'G:\P8_DICOMs\derived';  % For Windows
 elseif ismac
-    tgt_dir = '/Volumes/WORK/Pilot_P8_MRT/derived';  % For macOS
+    tgt_dir = '/Volumes/WORK/P8_DICOMs/derived';  % For macOS
 else
     error('Unsupported operating system');
 end
 
 % BIDS format file name part labels
-BIDS_fn_label{1} = '_task-gb'; % BIDS file name task label
-BIDS_fn_label{2} = '_1'; % BIDS file name acquisition label
-BIDS_fn_label{3} = '_run-0'; % BIDS file name run index
+BIDS_fn_label{1} = '_Predator'; % BIDS file name task label
+BIDS_fn_label{2} = ''; % BIDS file name acquisition label
+BIDS_fn_label{3} = '_s0'; % BIDS file name run index
 BIDS_fn_label{4} = '_bold'; % BIDS file name modality suffix
 
 % Preprocessing object
@@ -96,7 +96,12 @@ prep_vars.BIDS_fn_label = BIDS_fn_label;
 prep_vars.prep_steps = prep_steps;
 prep_vars.nslices = 72;
 prep_vars.TR = 1;
-prep_vars.slicetiming = [0.5,0.09000000000003183,-0.32000000000005,0.25,-0.1499999999999773,0.4199999999999591,0.009999999999990905,-0.3999999999999773,0.1699999999999591,-0.2400000000000091,0.3400000000000318,-0.07000000000005002,0.5,0.09000000000003183,-0.32000000000005,0.25,-0.1499999999999773,0.4199999999999591,0.009999999999990905,-0.3999999999999773,0.1699999999999591,-0.2400000000000091,0.3400000000000318,-0.07000000000005002,0.5,0.09000000000003183,-0.32000000000005,0.25,-0.1499999999999773,0.4199999999999591,0.009999999999990905,-0.3999999999999773,0.1699999999999591,-0.2400000000000091,0.3400000000000318,-0.07000000000005002,0.5,0.09000000000003183,-0.32000000000005,0.25,-0.1499999999999773,0.4199999999999591,0.009999999999990905,-0.3999999999999773,0.1699999999999591,-0.2400000000000091,0.3400000000000318,-0.07000000000005002,0.5,0.09000000000003183,-0.32000000000005,0.25,-0.1499999999999773,0.4199999999999591,0.009999999999990905,-0.3999999999999773,0.1699999999999591,-0.2400000000000091,0.3400000000000318,-0.07000000000005002,0.5,0.09000000000003183,-0.32000000000005,0.25,-0.1499999999999773,0.4199999999999591,0.009999999999990905,-0.3999999999999773,0.1699999999999591,-0.2400000000000091,0.3400000000000318,-0.07000000000005002];                     
+prep_vars.slicetiming = [0, 0.41, 0.82, 0.25, 0.65, 0.08, 0.49, 0.9, 0.33, 0.74, 0.16, 0.57, ...
+                         0, 0.41, 0.82, 0.25, 0.65, 0.08, 0.49, 0.9, 0.33, 0.74, 0.16, 0.57, ...
+                         0, 0.41, 0.82, 0.25, 0.65, 0.08, 0.49, 0.9, 0.33, 0.74, 0.16, 0.57, ...
+                         0, 0.41, 0.82, 0.25, 0.65, 0.08, 0.49, 0.9, 0.33, 0.74, 0.16, 0.57, ...
+                         0, 0.41, 0.82, 0.25, 0.65, 0.08, 0.49, 0.9, 0.33, 0.74, 0.16, 0.57, ...
+                         0, 0.41, 0.82, 0.25, 0.65, 0.08, 0.49, 0.9, 0.33, 0.74, 0.16, 0.57];
 
 % Cycle over participants
 % -----------------------
