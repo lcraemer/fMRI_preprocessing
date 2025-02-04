@@ -15,7 +15,7 @@ volumes = spm_select('List', struct_dir, '^sub.*\.nii$');
 
 % Perform segmentation
 matlabbatch = [];
-matlabbatch{1}.spm.spatial.preproc.channel.vols = cellstr([struct_dir filesep volumes ',1']);
+matlabbatch{1}.spm.spatial.preproc.channel.vols = cellstr([struct_dir filesep volumes]);
 matlabbatch{1}.spm.spatial.preproc.channel.biasreg = 0.001;
 matlabbatch{1}.spm.spatial.preproc.channel.biasfwhm = 60;
 matlabbatch{1}.spm.spatial.preproc.channel.write = [0 1];
