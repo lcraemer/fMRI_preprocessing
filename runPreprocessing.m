@@ -77,14 +77,14 @@ end
 %       0. Create folder and import func and anat files --> if this is
 %       selected the current folder is deleted and recreated 
 %       1. Segmentation/Normalization of T1 images
-%       2. Realignement
-%       3. Slice-timing correction
-%       4. Coregistration of mean EPI to T1       
-%       5. Application of normalization parameters to EPI data
-%       6. Estimation of noise regressors using the aCompCor method
+%       2. Normalization of T1 images
+%       3. Realignement
+%       4. Slice-timing correction
+%       5. Coregistration of mean EPI to T1       
+%       6. Application of normalization parameters to EPI data
+%       7. Estimation of noise regressors using the aCompCor method
 %       (Behzadi,2018) 
-%       7. Smoothing (optional) 
-prep_steps = [0:7];
+%       8. Smoothing (optional) 
 
 % Preprocessing variables
 prep_vars = struct();
