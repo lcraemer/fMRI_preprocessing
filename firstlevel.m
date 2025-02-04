@@ -41,10 +41,10 @@ for i_run = run_sel
 
     % get file names
     if is_loc
-       run_dir = fullfile(sub_dir,sprintf('RUN_0%i%s',i_run,cfg.BIDS_fn_label{1}{1}));
+        run_dir = fullfile(sub_dir, 'T1');
     else
-        run_dir = fullfile(sub_dir,sprintf('RUN_0%i%s',i_run,cfg.BIDS_fn_label{1}{2}));
-    end 
+        run_dir = fullfile(sub_dir, sprintf('%s%s%s%i%s', i_sub, cfg.BIDS_fn_label{1}, cfg.BIDS_fn_label{3}, i_run, cfg.BIDS_fn_label{4}));
+    end
     tmp = spm_select('FPList',run_dir,['^' prefix '.*\.(img|nii)$']);
     if isempty(tmp)
         error('No files found with prefix %s in %s',prefix,run_dir)
@@ -57,8 +57,9 @@ for i_run = run_sel
     
     ct = ct+1;
     matlabbatch{1}.spm.stats.fmri_spec.sess(ct).scans =files;
-    
-    if i_run == 1
+
+    %%% changed to 10 cause my first task run starts with 10
+    if i_run == 10
         if ~exist('n_slices','var')
             hdr = spm_vol(files{1});
             n_slices = hdr.dim(3);
@@ -72,7 +73,7 @@ for i_run = run_sel
     if is_loc
         matlabbatch{1}.spm.stats.fmri_spec.sess(ct).multi = {fullfile(ons_dir,sprintf('%s%s_run-00%i_events.mat',i_sub,cfg.BIDS_fn_label{1}{1},i_run))};    
     else
-        matlabbatch{1}.spm.stats.fmri_spec.sess(ct).multi = {fullfile(ons_dir,sprintf('%s%s_run-00%i_events.mat',i_sub,cfg.BIDS_fn_label{1}{2},i_run))};    
+        matlabbatch{1}.spm.stats.fmri_spec.sess(ct).multi = {fullfile(ons_dir, 'behav_Predator*.mat')};    
     end
     matlabbatch{1}.spm.stats.fmri_spec.sess(ct).regress = struct('name', {}, 'val', {});
     if mparams
