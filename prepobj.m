@@ -145,15 +145,23 @@ classdef prepobj
                 
                 switch p
                     
-                    case 1 % Segmentation/Normalization of T1 images
+                    case 1 % Segmentation
                         
                         % Inform user
                         disp(['Step ' num2str(p) ' Segmentation: ' sub_dir])
                         
                         % Run segmentation
                         segmentation(struct_dir, prepobj.spm_path)
+
+                    case 2 % normalization
                         
-                    case 2 % Realignement
+                        % Inform user
+                        disp(['Step ' num2str(p) ' Normalization: ' sub_dir])
+                        
+                        % Run segmentation
+                        normalization_t1(struct_dir, prepobj.spm_path)
+                        
+                    case 3 % Realignement
                         
                         % Use "r" as prefix for realignment
                         realignment_prefix = 'r';
@@ -177,7 +185,7 @@ classdef prepobj
                         % Update prefix
                         curr_prefix = strcat(realignment_prefix, curr_prefix);
                         
-                    case 3 % Slicetiming correction
+                    case 4 % Slicetiming correction
                         
                         % Use "a" as prefix for slicetiming correction
                         slicetiming_prefix = 'a';
@@ -204,7 +212,7 @@ classdef prepobj
                         % Update prefix
                         curr_prefix = strcat(slicetiming_prefix, curr_prefix);
                         
-                    case 4 % Coregistration of mean EPI to T1
+                    case 5 % Coregistration of mean EPI to T1
                         
                         % Cycle over tasks
                         for task_id = 1:length(prepobj.run_sel)
@@ -221,7 +229,7 @@ classdef prepobj
                         end
                         end
                         
-                    case 5 % Application of normalization parameters to EPI data
+                    case 6 % Application of normalization parameters to EPI data
                         
                         % Use "n" as prefix for normalization
                         normalization_prefix = 'n';
@@ -248,7 +256,7 @@ classdef prepobj
                         % Update prefix
                         curr_prefix = strcat(normalization_prefix, curr_prefix);
                         
-                    case 6 % Estimation of noise components
+                    case 7 % Estimation of noise components
                         
                         curr_prefix = 'nar';
                         
@@ -268,7 +276,7 @@ classdef prepobj
                         end
                         end
                         
-                    case 7 % Smoothing
+                    case 8 % Smoothing
                         
                         % set current prefix 
                         curr_prefix = 'nar';
