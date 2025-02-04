@@ -37,17 +37,16 @@ sub_dir = dir(fullfile(ds_root,'sub*'));
 sub_dir = {sub_dir.name}';
 
 % Data target directory
-tgt_dir = '/Volumes/WORK/P8_DICOMs//derived/GLM';
 if ispc
-    ds_root = 'G:\P8_DICOMs\derived\GLM';  % For Windows
+    tgt_dir = 'G:\P8_DICOMs\derived';  % For Windows
 elseif ismac
-    tgt_dir = '/Volumes/WORK/P8_DICOMs/derived/GLM';  % For macOS
+    tgt_dir = '/Volumes/WORK/P8_DICOMs/derived';  % For macOS
 else
     error('Unsupported operating system');
 end
 
 % BIDS format file name part labels
-BIDS_fn_label{1} = {'_task-localizer';'_task-main'}; % BIDS file name task label
+BIDS_fn_label{1} = '_Predator'; % BIDS file name task label
 BIDS_fn_label{2} = ''; % BIDS file name acquisition label
 BIDS_fn_label{3} = '_s0'; % BIDS file name run index
 BIDS_fn_label{4} = '_bold'; % BIDS file name modality suffix
@@ -93,16 +92,17 @@ for i = 1:numel(sub_dir)
     
     % generate onsets files from '*_events' files in the 'func' directory
     create_onset_files(prep,sub_dir{i});
-    
+
+    %%% what if I don't have s5nar because I did not do smoothing?
     % set parameters for GLM
     prefix = 's5nar';
     fir = 0; % no finite impulse response model
-    is_loc = 1; % if GLM for localizer should be computed or not
+    is_loc = 0; % if GLM for localizer should be computed or not
     mparams = 1 ; % do / do not include movement parameters
     tapas_denoise = 0; % do/ do not include tapas noise regressors
     physio = 0 ; % do / do not include physiological variables
     glmdenoise =  0; % do / do not include GLM denoise regressors
-    results_dir = fullfile(tgt_dir,sub_dir{i},'results','GLM','localizer');
+    results_dir = fullfile(tgt_dir,sub_dir{i}, 'GLM');
     if ~isdir(results_dir), mkdir(results_dir); end
     
     % Run GLM for current subject
