@@ -3,14 +3,17 @@
 % This script preprocesses the BIDS formatted fMRI data
 %
 %   Preprocessing steps include
-%       1. Segmentation/Normalization of T1 images
-%       2. Realignement
-%       3. Slice-timing correction
-%       4. Coregistration of mean EPI to T1       
-%       5. Application of normalization parameters to EPI data
-%       6. Estimation of noise regressors using the aCompCor method
-%       (Behzadi,2018) 
-%       7. Smoothing (optional) 
+%       0. Create folder and import func and anat files --> if this is
+%       selected the current folder is deleted and recreated 
+%       1. Segmentation
+%       2. Normalization of T1 images
+%       3. Realignement
+%       4. Slice-timing correction
+%       5. Coregistration of mean EPI to T1       
+%       6. Application of normalization parameters to EPI data
+%       7. Estimation of noise regressors using the aCompCor method
+%       Behzadi,2018) 
+%       8. Smoothing (optional) 
 
 % Initialization
 % --------------
@@ -60,7 +63,7 @@ end
 % BIDS format file name part labels
 BIDS_fn_label{1} = '_Predator'; % BIDS file name task label
 BIDS_fn_label{2} = ''; % BIDS file name acquisition label
-BIDS_fn_label{3} = '_s0'; % BIDS file name run index
+BIDS_fn_label{3} = '_run-0'; % BIDS file name run index
 BIDS_fn_label{4} = '_bold'; % BIDS file name modality suffix
 
 % Preprocessing object
@@ -84,7 +87,8 @@ end
 %       6. Application of normalization parameters to EPI data
 %       7. Estimation of noise regressors using the aCompCor method
 %       (Behzadi,2018) 
-%       8. Smoothing (optional) 
+%       8. Smoothing (optional)
+prep_steps = [1];
 
 % Preprocessing variables
 prep_vars = struct();
