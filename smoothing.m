@@ -17,10 +17,10 @@ run_files = spm_select('List', run_dir, run_filt);
 fileset = getImagingFileset(run_dir, run_files);
 
 % Create prefix
-kernel_size=[5 5 5];
-aa=num2str(unique(kernel_size));
+kernel_size = [5 5 5];
+aa = num2str(unique(kernel_size));
 if length(aa)>1
-    aa=num2str(kernel_size);
+    aa = num2str(kernel_size);
 end
 smoothing_prefix = ['s' aa(~isspace(aa))];
 
