@@ -21,6 +21,7 @@
 clc
 close all
 clear all
+metadata_remove
 
 % Directories 
 % -----------
@@ -38,9 +39,9 @@ addpath(tapas_path)
 % Data source root directory
 % E.g., ds_root = '~/Documents/gb_fmri_data/BIDS/ds_xxx';
 if ispc
-    ds_root = 'G:\P8_DICOMs\BIDS';  % For Windows
+    ds_root = 'G:\Pilot_P8_MRT\BIDS';  % For Windows
 elseif ismac
-    ds_root = '/Volumes/WORK/P8_DICOMs/BIDS';  % For macOS
+    ds_root = '/Volumes/WORK/Pilot_P8_MRT/BIDS';  % For macOS
 else
     error('Unsupported operating system');
 end
@@ -53,9 +54,9 @@ sub_dir = {sub_dir.name}';
 
 % Data target directory 
 if ispc
-    tgt_dir = 'G:\P8_DICOMs\derived';  % For Windows
+    tgt_dir = 'G:\Pilot_P8_MRT\derived';  % For Windows
 elseif ismac
-    tgt_dir = '/Volumes/WORK/P8_DICOMs/derived';  % For macOS
+    tgt_dir = '/Volumes/WORK/Pilot_P8_MRT/derived';  % For macOS
 else
     error('Unsupported operating system');
 end
