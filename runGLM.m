@@ -10,6 +10,7 @@ clc
 close all
 clear all
 dbstop if error
+metadata_remove
 
 % Directories
 % -----------
@@ -23,9 +24,9 @@ spm_jobman('initcfg')
 % Data source root directory
 % E.g., ds_root = '~/Documents/gb_fmri_data/BIDS/ds_xxx';
 if ispc
-    ds_root = 'G:\P8_DICOMs\BIDS';  % For Windows
+    ds_root = 'G:\Pilot_P8_MRT\BIDS';  % For Windows
 elseif ismac
-    ds_root = '/Volumes/WORK/P8_DICOMs/BIDS';  % For macOS
+    ds_root = '/Volumes/WORK/Pilot_P8_MRT/BIDS';  % For macOS
 else
     error('Unsupported operating system');
 end
@@ -38,9 +39,9 @@ sub_dir = {sub_dir.name}';
 
 % Data target directory
 if ispc
-    tgt_dir = 'G:\P8_DICOMs\derived';  % For Windows
+    tgt_dir = 'G:\Pilot_P8_MRT\derived';  % For Windows
 elseif ismac
-    tgt_dir = '/Volumes/WORK/P8_DICOMs/derived';  % For macOS
+    tgt_dir = '/Volumes/WORK/Pilot_P8_MRT/derived';  % For macOS
 else
     error('Unsupported operating system');
 end
@@ -48,7 +49,7 @@ end
 % BIDS format file name part labels
 BIDS_fn_label{1} = '_Predator'; % BIDS file name task label
 BIDS_fn_label{2} = ''; % BIDS file name acquisition label
-BIDS_fn_label{3} = '_s0'; % BIDS file name run index
+BIDS_fn_label{3} = '_run-0'; % BIDS file name run index
 BIDS_fn_label{4} = '_bold'; % BIDS file name modality suffix
 
 % Preprocessing object
@@ -57,7 +58,7 @@ BIDS_fn_label{4} = '_bold'; % BIDS file name modality suffix
 % Select run numbers
 % E.g., run_sel = {[1 2 3 4 5 6], [1 2 3 4 5 6]};
 % first vector in the first cell is for subject 1 and for the first task, second vector is for the second task
-%%% split between {[T1/localizer][task]}
+%%% split between {[T1/localizer],[task]}
 for i = 1:length(sub_dir)
     run_sel{i} = {[19],[10 12 14 16]};
 end
