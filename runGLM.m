@@ -10,7 +10,7 @@ clc
 close all
 clear all
 dbstop if error
-metadata_remove
+remAppledouble
 
 % Directories
 % -----------
