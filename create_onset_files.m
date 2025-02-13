@@ -49,11 +49,13 @@ for this_run = 1:length(evt_fnames)
     
     % load evts file 
     evts = tdfread(fullfile(func_dir,evt_fnames{this_run}));
-    
-    ons_names = unique(cellstr(evts.trial_type));
-    
+
+    % ons_names = unique(cellstr(evts.trial_type));
+    %%% My _events.tsv is not setup to work like this, hence:
+    ons_names = fieldnames(evts);
+
     % exlude catches
-    ons_names(find(strcmpi(ons_names,'Catch')))= [];
+    %%% ons_names(find(strcmpi(ons_names,'Catch')))= [];
     
     onsets = cell(1,length(ons_names));
     names = ons_names; 
