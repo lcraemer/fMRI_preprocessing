@@ -19,9 +19,9 @@
 % --------------
 
 clc
+remAppledouble
 close all
 clear all
-metadata_remove
 
 % Directories 
 % -----------
