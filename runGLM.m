@@ -7,10 +7,9 @@
 % --------------
 
 clc
+remAppledouble
 close all
 clear all
-dbstop if error
-remAppledouble
 
 % Directories
 % -----------
