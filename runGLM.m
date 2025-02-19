@@ -33,8 +33,9 @@ src_dir = 'func';  % functional data sub-directory
 
 % Subject directories
 % E.g., sub_dir = {'sub-01', 'sub-02', 'sub-03'};
-sub_dir = dir(fullfile(ds_root,'sub*'));
-sub_dir = {sub_dir.name}';
+sub_dir_struct = dir(fullfile(ds_root, 'sub*'));  % Get directory listing
+sub_dir = {sub_dir_struct.name};  % Convert to a cell array
+sub_dir = sub_dir(:);  % Ensure it is a column vector
 
 % Data target directory
 if ispc
