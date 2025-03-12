@@ -34,48 +34,39 @@ function create_onset_files(cfg, i_sub)
 func_dir = fullfile(cfg.ds_root,i_sub,'func');
 evt_files = dir(fullfile(func_dir,'*events.tsv'));
 evt_fnames = {evt_files.name}';
+onset_dir = fullfile(cfg.tgt_dir, i_sub, 'onsets');
 
-% if the folder already exists then empty it first
-if exist(fullfile(cfg.tgt_dir,i_sub, 'onsets'))
-    files = dir(fullfile(cfg.tgt_dir,i_sub, 'onsets'));
-    for k = 1:length(files)
-        delete([fullfile(cfg.tgt_dir,i_sub, 'onsets') '/' files(k).name]);
-    end
-    rmdir(fullfile(cfg.tgt_dir,i_sub, 'onsets'));
-    mkdir(fullfile(cfg.tgt_dir,i_sub, 'onsets'));
+% Check if the folder exists
+if exist(onset_dir, 'dir')
+    rmdir(onset_dir, 's');
 end
+
+mkdir(onset_dir);
 
 for this_run = 1:length(evt_fnames)
     
-    % load evts file 
+
+    % load evts file
     evts = tdfread(fullfile(func_dir,evt_fnames{this_run}));
 
-    % ons_names = unique(cellstr(evts.trial_type));
-    %%% My _events.tsv is not setup to work like this, hence:
-    ons_names = fieldnames(evts);
+    ons_names = unique(cellstr(evts.trial_type));
 
     % exlude catches
     %%% ons_names(find(strcmpi(ons_names,'Catch')))= [];
-    
+
     onsets = cell(1,length(ons_names));
-    names = ons_names; 
-    durations = cell(1,length(ons_names)); 
-    
+    names = ons_names;
+    durations = cell(1,length(ons_names));
+
     for ons = 1:length(ons_names)
-        
-        this_ons = ons_names{ons}; 
-        
+
+        this_ons = ons_names{ons};
+
         onsets{ons} = evts.onset(find(strcmpi(cellstr(evts.trial_type),this_ons)));
-        
+
         durations{ons} = evts.duration(find(strcmpi(cellstr(evts.trial_type),this_ons)));
-    end 
-    
-    % if folder does not exist then create it
-    if ~exist(fullfile(cfg.tgt_dir,i_sub, 'onsets'))
-        mkdir(fullfile(cfg.tgt_dir,i_sub, 'onsets'));
     end
-    
-    save(fullfile(cfg.tgt_dir,i_sub, 'onsets',[evt_fnames{this_run}(1:end-4),'.mat']), 'names', 'onsets', 'durations');
-    
+
+    save(fullfile(cfg.tgt_dir, i_sub, 'onsets', ['behav_Predator_',i_sub,'.mat']), 'names', 'onsets', 'durations');end
 end
 end
