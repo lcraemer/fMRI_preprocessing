@@ -1,5 +1,5 @@
 function matlabbatch = firstlevel(cfg,prefix,results_dir,i_sub,mparams,physio,tapas_denoise,glmdenoise,is_loc)
-
+remAppledouble
 % function matlabbatch = firstlevel(cfg,prefix,results_dir,onsname,i_sub,mparams,n_slices)
 
 % cfg: passed from prepobj
@@ -10,7 +10,7 @@ function matlabbatch = firstlevel(cfg,prefix,results_dir,i_sub,mparams,physio,ta
 % physio: should physiological parameters be included (1 or 0)
 % glmdenoise: name of noise regressors or 0
 % is_loc: if the data should be the one from the main experiment or the
-% localizer 
+% localizer
 
 mparams; % check if exists
 physio;
@@ -31,11 +31,11 @@ matlabbatch{1}.spm.stats.fmri_spec.timing.units = 'secs';
 matlabbatch{1}.spm.stats.fmri_spec.timing.RT = cfg.TR;
 
 ct = 0;
-if is_loc 
+if is_loc
     run_sel = cfg.run_sel{1};
-else 
+else
     run_sel = cfg.run_sel{2};
-end 
+end
 
 for i_run = run_sel
 
@@ -54,7 +54,7 @@ for i_run = run_sel
     for i = 1:size(vols,1)
         files{i} = [tmp(1,:) ',',num2str(i)];
     end
-    
+
     ct = ct+1;
     matlabbatch{1}.spm.stats.fmri_spec.sess(ct).scans =files;
 
@@ -65,16 +65,15 @@ for i_run = run_sel
             n_slices = hdr.dim(3);
         end
         matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t = n_slices;
-        matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t0 = ceil(n_slices/2);
-        
+        matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t0 = 1; % Set to reference first slice
+
     end
-    
+
     matlabbatch{1}.spm.stats.fmri_spec.sess(ct).cond = struct('name', {}, 'onset', {}, 'duration', {}, 'tmod', {}, 'pmod', {}, 'orth', {});
     if is_loc
-        matlabbatch{1}.spm.stats.fmri_spec.sess(ct).multi = {fullfile(ons_dir,sprintf('%s%s_run-00%i_events.mat',i_sub,cfg.BIDS_fn_label{1}{1},i_run))};    
+        matlabbatch{1}.spm.stats.fmri_spec.sess(ct).multi = {fullfile(ons_dir,sprintf('%s%s_run-00%i_events.mat',i_sub,cfg.BIDS_fn_label{1}{1},i_run))};
     else
-        matlabbatch{1}.spm.stats.fmri_spec.sess(ct).multi = {fullfile(ons_dir, 'behav_Predator*.mat')};    
-    end
+        matlabbatch{1}.spm.stats.fmri_spec.sess(ct).multi = {fullfile(ons_dir, sprintf('behav_Predator_%s.mat', i_sub))};    end
     matlabbatch{1}.spm.stats.fmri_spec.sess(ct).regress = struct('name', {}, 'val', {});
     if mparams
         rp_name = spm_select('fplist',run_dir,'^rp_.*\.txt$');
@@ -87,7 +86,7 @@ for i_run = run_sel
             physio_name = '';
         end
         matlabbatch{1}.spm.stats.fmri_spec.sess(ct).multi_reg = {physio_name};
-    elseif tapas_denoise 
+    elseif tapas_denoise
         tapas_name = fullfile(run_dir,'tapas_regressors.txt');
         matlabbatch{1}.spm.stats.fmri_spec.sess(ct).multi_reg = {tapas_name};
     elseif glmdenoise
