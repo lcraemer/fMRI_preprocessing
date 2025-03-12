@@ -10,6 +10,7 @@ clc
 remAppledouble
 close all
 clear all
+dbstop if error
 
 % Directories
 % -----------
@@ -23,13 +24,13 @@ spm_jobman('initcfg')
 % Data source root directory
 % E.g., ds_root = '~/Documents/gb_fmri_data/BIDS/ds_xxx';
 if ispc
-    ds_root = 'G:\Pilot_P8_MRT\BIDS';  % For Windows
+    ds_root = 'G:\Pilot_P8_MRT\BIDS';
 elseif ismac
-    ds_root = '/Volumes/WORK/Pilot_P8_MRT/BIDS';  % For macOS
+    ds_root = '/Volumes/WORK/Pilot_P8_MRT/BIDS';
 else
     error('Unsupported operating system');
 end
-src_dir = 'func';  % functional data sub-directory
+src_dir = 'func';
 
 % Subject directories
 % E.g., sub_dir = {'sub-01', 'sub-02', 'sub-03'};
@@ -74,23 +75,22 @@ prep_vars.prep_steps = [];
 prep_vars.nslices = 72;
 prep_vars.TR = 1;
 prep_vars.slicetiming = [0, 0.41, 0.82, 0.25, 0.65, 0.08, 0.49, 0.9, 0.33, 0.74, 0.16, 0.57, ...
-                         0, 0.41, 0.82, 0.25, 0.65, 0.08, 0.49, 0.9, 0.33, 0.74, 0.16, 0.57, ...
-                         0, 0.41, 0.82, 0.25, 0.65, 0.08, 0.49, 0.9, 0.33, 0.74, 0.16, 0.57, ...
-                         0, 0.41, 0.82, 0.25, 0.65, 0.08, 0.49, 0.9, 0.33, 0.74, 0.16, 0.57, ...
-                         0, 0.41, 0.82, 0.25, 0.65, 0.08, 0.49, 0.9, 0.33, 0.74, 0.16, 0.57, ...
-                         0, 0.41, 0.82, 0.25, 0.65, 0.08, 0.49, 0.9, 0.33, 0.74, 0.16, 0.57];
+    0, 0.41, 0.82, 0.25, 0.65, 0.08, 0.49, 0.9, 0.33, 0.74, 0.16, 0.57, ...
+    0, 0.41, 0.82, 0.25, 0.65, 0.08, 0.49, 0.9, 0.33, 0.74, 0.16, 0.57, ...
+    0, 0.41, 0.82, 0.25, 0.65, 0.08, 0.49, 0.9, 0.33, 0.74, 0.16, 0.57, ...
+    0, 0.41, 0.82, 0.25, 0.65, 0.08, 0.49, 0.9, 0.33, 0.74, 0.16, 0.57, ...
+    0, 0.41, 0.82, 0.25, 0.65, 0.08, 0.49, 0.9, 0.33, 0.74, 0.16, 0.57];
 
 % Cycle over participants
 % -----------------------
-%%% why 23?
-% for i = 23:numel(sub_dir)
+
 for i = 1:numel(sub_dir)
 
     prep_vars.run_sel = run_sel{i};
-    
+
     % Preprocessing object instance
     prep = prepobj(prep_vars);
-    
+
     % generate onsets files from '*_events' files in the 'func' directory
     create_onset_files(prep,sub_dir{i});
 
@@ -105,46 +105,77 @@ for i = 1:numel(sub_dir)
     glmdenoise =  0; % do / do not include GLM denoise regressors
     results_dir = fullfile(tgt_dir,sub_dir{i}, 'GLM');
     if ~isdir(results_dir), mkdir(results_dir); end
-    
+
     % Run GLM for current subject
     matlabbatch = firstlevel(prep,prefix,results_dir,sub_dir{i},mparams,physio,tapas_denoise,glmdenoise,is_loc);
     spm_jobman('run',matlabbatch)
-    
+
     % run contrasts
     if is_loc
-        
-        % Set contrasts
+        % Set contrasts for localizer
         clear matlabbatch
-        matlabbatch{1}.spm.stats.con.spmmat = {fullfile(results_dir,'SPM.mat')};
+        matlabbatch{1}.spm.stats.con.spmmat = {fullfile(results_dir, 'SPM.mat')};
         matlabbatch{1}.spm.stats.con.consess{1}.tcon.name = 'objects > scrambled';
         matlabbatch{1}.spm.stats.con.consess{1}.tcon.weights = [0 1 -1];
         matlabbatch{1}.spm.stats.con.consess{2}.tcon.name = 'scrambled > objects';
         matlabbatch{1}.spm.stats.con.consess{2}.tcon.weights = [0 -1 1];
         matlabbatch{1}.spm.stats.con.consess{3}.tcon.name = 'all > baseline';
         matlabbatch{1}.spm.stats.con.consess{3}.tcon.weights = [0 1 1];
-        matlabbatch{1}.spm.stats.con.delete = 1 ;
-        spm_jobman('run',matlabbatch)
+        matlabbatch{1}.spm.stats.con.delete = 1;
+        spm_jobman('run', matlabbatch);
     else
-        % Set contrasts
+        % Set contrasts for task GLM
         clear matlabbatch
-        contrast_names = {'Photo';'Drawing';'Sketch'};%
+        contrast_names = {'WaitScene vs Outcome'};
+
         for con = 1:length(contrast_names)
-            % first get condition order
-            cond_order = get_cond_order(prep,sub_dir{i});
-            cond_order(cond_order ~=con) =0;
-            cond_order(cond_order==con)=1;
-            
+            % First get condition order
+            cond_order = get_cond_order(prep, sub_dir{i});
             weights = [];
-            
-            for run = 1:length(cond_order)
-                weights = [weights,[ones(1,48),zeros(1,36)]*cond_order(run)];
+
+            % Determine the number of volumes dynamically
+            n_volumes_per_run = zeros(1, length(run_sel{i}{2}));
+
+            for r = 1:length(run_sel{i}{2})
+                run_number = run_sel{i}{2}(r);
+                nii_file = fullfile(ds_root, sub_dir{i}, src_dir, ...
+                    sprintf('sub-%s%s%s%d%s.nii', sub_dir{i}(5:end), BIDS_fn_label{1}, BIDS_fn_label{3}, run_number, BIDS_fn_label{4}));
+
+                nii_gz_file = [nii_file, '.gz'];
+
+                if exist(nii_file, 'file')
+                    V = spm_vol(nii_file);
+                    n_volumes_per_run(r) = numel(V);
+                elseif exist(nii_gz_file, 'file')
+                    gunzip(nii_gz_file);
+                    V = spm_vol(nii_file);
+                    n_volumes_per_run(r) = numel(V);
+                    delete(nii_file);
+                else
+                   error('File not found: %s or %s', nii_file, nii_gz_file);
+                end
             end
-            matlabbatch{1}.spm.stats.con.spmmat = {fullfile(results_dir,'SPM.mat')};
+
+            for run = 1:length(cond_order)
+                % Create a weight vector with zeroes for the current run
+                current_weights = zeros(1, n_volumes_per_run(run));
+
+                % Assign 1 to all WaitScene, -1 to all Outcome trials
+                weights(cond_order == 2) = 1;
+                weights(cond_order == 3) = -1;
+
+                % Append to overall weights
+                weights = [weights, current_weights];
+            end  % End of loop over runs
+
+            % Create contrast batch
+            matlabbatch{1}.spm.stats.con.spmmat = {fullfile(results_dir, 'SPM.mat')};
             matlabbatch{1}.spm.stats.con.consess{con}.tcon.name = contrast_names{con};
             matlabbatch{1}.spm.stats.con.consess{con}.tcon.weights = weights;
-        end
-        matlabbatch{1}.spm.stats.con.delete = 1 ;
-        spm_jobman('run',matlabbatch)
+        end  % End of contrast_names loop
+
+        matlabbatch{1}.spm.stats.con.delete = 1;
+        spm_jobman('run', matlabbatch);
     end
-end 
-    fprintf('GLM finished\n');
+
+end
