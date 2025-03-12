@@ -26,7 +26,7 @@ matlabbatch{1}.spm.tools.physio.log_files.respiration = {''};
 matlabbatch{1}.spm.tools.physio.log_files.scan_timing = {''};
 matlabbatch{1}.spm.tools.physio.log_files.sampling_interval = [];
 matlabbatch{1}.spm.tools.physio.log_files.relative_start_acquisition = 0;
-matlabbatch{1}.spm.tools.physio.log_files.align_scan = 'last';
+matlabbatch{1}.spm.tools.physio.log_files.align_scan = 'first';
 
 % Scan Timing Parameters
 matlabbatch{1}.spm.tools.physio.scan_timing.sqpar.Nslices = prepobj.nslices;
